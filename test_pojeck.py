@@ -32,40 +32,30 @@ def test_get_data_operation():
         assert set(res[i].keys()) == set(valid_keys1) or set(res[i].keys()) == set(
             valid_keys2), 'неверный список ключей'
 
+def get_obj_operation(file: str) -> Operations:
+    data = get_data_operation(file=file)[1]
+    operations = Operations(**data)
+    return operations
 
 class Test_Operations:
 
     def test_execution_check(self):
-        data = get_data_operation(FILE_JSON)[1]
-        operations = Operations(**data)
-        assert operations.get_execution_check() == True
+        assert get_obj_operation(FILE_JSON).get_execution_check() == True, 'Возвратиллось не True'
 
     def test_translation_description(self):
-        data = get_data_operation(FILE_JSON)[1]
-        operations = Operations(**data)
-        assert operations.get_translation_description() == 'Перевод организации'
+        assert get_obj_operation(FILE_JSON).get_translation_description() == 'Перевод организации', 'Не совпало описание перевода'
 
     def test_format_where(self):
-        data = get_data_operation(FILE_JSON)[1]
-        operations = Operations(**data)
-        assert operations.format_where() == 'MasterCard 7158 3*** ***6 758'
+        assert get_obj_operation(FILE_JSON).format_where() == 'MasterCard 7158 3*** ***6 758', 'Не совпало откуда перевод'
 
     def test_form_recipient(self):
-        data = get_data_operation(FILE_JSON)[1]
-        operations = Operations(**data)
-        assert operations.form_recipient() == 'Счет **5560'
+        assert get_obj_operation(FILE_JSON).form_recipient() == 'Счет **5560', 'Не совпало куда перевод'
 
     def test_transfer_amount(self):
-        data = get_data_operation(FILE_JSON)[1]
-        operations = Operations(**data)
-        assert operations.get_transfer_amount() == '8221,37'
+        assert get_obj_operation(FILE_JSON).get_transfer_amount() == '8221,37', 'Не совпала сумма перевода'
 
     def test_currency(self):
-        data = get_data_operation(FILE_JSON)[1]
-        operations = Operations(**data)
-        assert operations.currency() == 'доллары США'
+        assert get_obj_operation(FILE_JSON).get_currency() == 'доллары США', 'Не совпала валюта перевода'
 
     def test_format_date(self):
-        data = get_data_operation(FILE_JSON)[1]
-        operations = Operations(**data)
-        assert operations.get_date() == datetime.date(2019, 7, 3)
+        assert get_obj_operation(FILE_JSON).get_date() == datetime.date(2019, 7, 3), 'Не совпала дата'
