@@ -1,18 +1,18 @@
 import datetime
 
 class Operations:
-    def __init__(self, id, состояние, дата, ОперацияСумма, description, кому, от=None):
+    def __init__(self, id, condition, date_, sum_operation, description, to_whom, from_whom=None):
         self.id = id
-        self.operation_amount = ОперацияСумма
-        self.date = self._date_output(дата)
-        self.to_whom = кому
-        self.from_ = от
-        self.state = состояние
+        self.sum_operation = sum_operation
+        self.date = self._date_output(date_)
+        self.to_whom = to_whom
+        self.from_whom = from_whom
+        self.state = condition
         self.description = description
 
-    def execution_check(self):
+    def get_execution_check(self) -> bool:
         """
-        проверка выполнения
+        про
         :return: Bool
         """
         if self.state == 'ВЫПОЛНЕНО':
@@ -22,40 +22,30 @@ class Operations:
 
 
 
-    def _date_output(self, date):
+    def _date_output(self, date: str) -> datetime:
         date_list = date.split('T')
         date_time_obj = ' '.join(date_list)
         return datetime.datetime.strptime(date_time_obj,  '%Y-%m-%d %H:%M:%S.%f')
 
 
-    def translation_description(self):
+    def get_translation_description(self) -> str:
         """
         описание перевода
         :return: str
         """
         return self.description
 
-    def format_where(self):
+    def format_where(self) -> str:
         """
         откуда
         :return: srt
         """
-        if self.from_:
-            from_list = self.from_.split(' ')
-            star = '*'
-            if len(from_list) > 2:
-                check = f'{from_list[0]} {from_list[1]}'
-                form_number =  f'{from_list[2][:5]}{star * (len(from_list[2]) - 10)}{from_list[2][-4:]}'
+        if self.from_whom:
+            from_list = self.from_whom.split(' ')
+            num_str = from_list[1]
+            formatted_num = num_str[:2] + "*" * 10 + num_str[-4:]
 
-            else:
-                check = f'{from_list[0]}'
-                form_number = f'{from_list[1][:5]}{star * (len(from_list[1]) - 10)}{from_list[1][-4:]}'
-
-            form_list = [form_number[i:i + 4] for i in range(0, len(form_number), 4)]
-
-            result = f'{check} {" ".join(form_list)}'
-
-            return result
+            return f'{from_list[0]}: {" ".join(formatted_num[i:i + 4] for i in range(0, 16, 4))}'
 
         else:
             return "от кого не указано"
@@ -66,25 +56,24 @@ class Operations:
         :return:str
         """
         from_list = self.to_whom.split(' ')
-        form_recipient = f'**{from_list[1][-4:]}'
-        return f'{from_list[0]} {form_recipient}'
+        return f"{from_list[0]}: **{self.to_whom[-4:]}"
 
-    def transfer_amount(self):
+    def get_transfer_amount(self):
         """
         сумма перевода
         :return: str
         """
 
-        return self.operation_amount["сумма"]
+        return self.sum_operation["сумма"]
 
-    def currency(self):
+    def get_currency(self):
         """
         валюта
         :return:
         """
-        return self.operation_amount["валюта"]["имя"]
+        return self.sum_operation["валюта"]["имя"]
 
-    def format_date(self):
+    def get_date(self)-> datetime:
         """
         формат даты
         :return: data

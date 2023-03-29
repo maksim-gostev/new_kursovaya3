@@ -38,12 +38,12 @@ class Test_Operations:
     def test_execution_check(self):
         data = get_data_operation(FILE_JSON)[1]
         operations = Operations(**data)
-        assert operations.execution_check() == True
+        assert operations.get_execution_check() == True
 
     def test_translation_description(self):
         data = get_data_operation(FILE_JSON)[1]
         operations = Operations(**data)
-        assert operations.translation_description() == 'Перевод организации'
+        assert operations.get_translation_description() == 'Перевод организации'
 
     def test_format_where(self):
         data = get_data_operation(FILE_JSON)[1]
@@ -58,7 +58,7 @@ class Test_Operations:
     def test_transfer_amount(self):
         data = get_data_operation(FILE_JSON)[1]
         operations = Operations(**data)
-        assert operations.transfer_amount() == '8221,37'
+        assert operations.get_transfer_amount() == '8221,37'
 
     def test_currency(self):
         data = get_data_operation(FILE_JSON)[1]
@@ -68,4 +68,4 @@ class Test_Operations:
     def test_format_date(self):
         data = get_data_operation(FILE_JSON)[1]
         operations = Operations(**data)
-        assert operations.format_date() == datetime.date(2019, 7, 3)
+        assert operations.get_date() == datetime.date(2019, 7, 3)
