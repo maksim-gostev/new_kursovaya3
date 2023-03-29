@@ -20,7 +20,7 @@ def get_data_operation(file: str) -> Union[list, bool]:
         return False
 
 
-def creating_classes_and_sorting(file: str ) -> Union[list[Operations], bool]:
+def creating_classes_and_execution_check(file: str ) -> Union[list[Operations], bool]:
     """
     фильтрация данных по статусу
     и сортировка по дату
@@ -33,9 +33,18 @@ def creating_classes_and_sorting(file: str ) -> Union[list[Operations], bool]:
         for data in data_file:
             operation = Operations(data["id"], data["состояние"], data["дата"], data["ОперацияСумма"], data["description"],
                                data["кому"], data.get("от"))
+            class_list.append(operation)
             if operation.get_execution_check():
                 class_list.append(operation)
-        sorted_class = sorted(class_list, key=operator.attrgetter('date'), reverse=True)
-        return sorted_class
+        return class_list
     else:
         return False
+
+def sorting_data(class_list: list[Operations]) -> list[Operations]:
+    """
+    сорировка класов по дате
+    :param class_list: список класов
+    :return: отсортированный список
+    """
+    sorted_class = sorted(class_list, key=operator.attrgetter('date'), reverse=True)
+    return sorted_class

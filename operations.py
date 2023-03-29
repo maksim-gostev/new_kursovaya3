@@ -5,13 +5,13 @@ import datetime
 
 class Operations:
     def __init__(self, pk, condition, date_, sum_operation, description, to_whom, from_whom=None):
-        self.id = pk
-        self.sum_operation = sum_operation
+        self._id = pk
+        self._sum_operation = sum_operation
         self.date = self._date_output(date_)
-        self.to_whom = to_whom
-        self.from_whom = from_whom
-        self.state = condition
-        self.description = description
+        self._to_whom = to_whom
+        self._from_whom = from_whom
+        self._state = condition
+        self._description = description
 
     def _date_output(self, date: str) -> datetime:
         """
@@ -30,7 +30,7 @@ class Operations:
         Проверка статуса выполнения операции
         :return: Bool
         """
-        if self.state == 'ВЫПОЛНЕНО':
+        if self._state == 'ВЫПОЛНЕНО':
             return True
         else:
             return False
@@ -40,15 +40,15 @@ class Operations:
         описание перевода
         :return: str
         """
-        return self.description
+        return self._description
 
     def format_where(self) -> str:
         """
         форматирование от куда перевод
         :return: srt
         """
-        if self.from_whom:
-            from_list = self.from_whom.split(' ')
+        if self._from_whom:
+            from_list = self._from_whom.split(' ')
             num_str = from_list[1]
             formatted_num = num_str[:2] + "*" * 10 + num_str[-4:]
 
@@ -62,8 +62,8 @@ class Operations:
         форматирования куда перевод
         :return:str
         """
-        from_list = self.to_whom.split(' ')
-        return f"{from_list[0]}: **{self.to_whom[-4:]}"
+        from_list = self._to_whom.split(' ')
+        return f"{from_list[0]}: **{self._to_whom[-4:]}"
 
     def get_transfer_amount(self) -> str:
         """
@@ -71,14 +71,14 @@ class Operations:
         :return: str
         """
 
-        return self.sum_operation["сумма"]
+        return self._sum_operation["сумма"]
 
     def get_currency(self) -> str:
         """
         валюта
         :return:
         """
-        return self.sum_operation["валюта"]["имя"]
+        return self._sum_operation["валюта"]["имя"]
 
     def get_date(self) -> datetime:
         """
